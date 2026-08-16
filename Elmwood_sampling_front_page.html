@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Elmwood Four-Day Week Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1E2B24;
+    --panel: #263A2F;
+    --panel-2: #2C4237;
+    --ink: #F3EFE3;
+    --ink-dim: #B9C7BC;
+    --manila: #D9B571;
+    --manila-dim: #9C874F;
+    --yes: #8FBF9F;
+    --yes-ink: #16241A;
+    --no: #C77E86;
+    --no-ink: #2A1418;
+    --line: rgba(243,239,227,0.16);
+    --line-strong: rgba(243,239,227,0.32);
+    --danger: #C77E86;
+    --radius: 6px;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --mono: "Space Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(243,239,227,0.025) 0px, rgba(243,239,227,0.025) 1px, transparent 1px, transparent 32px),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding: 0 0 60px;
+  }
+  a{ color: var(--manila); }
+
+  .wrap{ max-width: 780px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Header ---------- */
+  header.hero{
+    padding: 56px 20px 40px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--manila);
+    margin: 0 0 14px;
+  }
+  h1{
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(30px, 5.6vw, 42px);
+    line-height: 1.1;
+    margin: 0 0 16px;
+    max-width: 16ch;
+  }
+  .lede{
+    font-size: 16.5px;
+    color: var(--ink-dim);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .lede strong{ color: var(--ink); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section{ padding: 40px 20px; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom: none; }
+
+  .section-label{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--manila-dim);
+    margin: 0 0 8px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .section-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+  h2{
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0 0 6px;
+  }
+  .section-sub{ color: var(--ink-dim); margin: 0 0 24px; font-size: 15px; max-width: 60ch; }
+
+  /* ---------- Location cards ---------- */
+  .location-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 620px){ .location-grid{ grid-template-columns: 1fr; } }
+  .location-card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .location-card .icon{
+    width: 34px; height: 34px;
+    color: var(--manila);
+    margin-bottom: 10px;
+  }
+  .location-card .icon svg{ width:100%; height:100%; }
+  .location-card h3{
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .location-card .headcount{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--manila-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 10px;
+  }
+  .location-card p.blurb{
+    font-size: 14px;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+
+  /* ---------- Form controls ---------- */
+  label{
+    display:block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin: 0 0 6px;
+  }
+  .field{ margin-bottom: 20px; }
+  input[type="text"], input[type="password"]{
+    width: 100%;
+    background: var(--panel-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--ink);
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: var(--sans);
+    appearance: none;
+  }
+  input:focus, button:focus-visible{
+    outline: 2px solid var(--manila);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Method buttons ---------- */
+  .method-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px){ .method-grid{ grid-template-columns: 1fr; } }
+  .method-btn{
+    text-align: left;
+    background: var(--panel-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    color: var(--ink);
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .method-btn:hover{ border-color: var(--manila-dim); }
+  .method-btn.active{
+    border-color: var(--manila);
+    background: rgba(217,181,113,0.14);
+    color: var(--manila);
+  }
+  .method-desc{
+    font-size: 13.5px;
+    color: var(--ink-dim);
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--panel);
+    border-left: 2px solid var(--manila-dim);
+    border-radius: 0 4px 4px 0;
+  }
+  .sample-size-note{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin-top: 14px;
+  }
+  .sample-size-note b{ color: var(--manila); }
+
+  button{
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14.5px;
+    border-radius: var(--radius);
+    padding: 13px 22px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.05s ease, background 0.15s ease, opacity 0.15s ease;
+  }
+  button:active{ transform: translateY(1px); }
+  button:disabled{ opacity: 0.4; cursor: not-allowed; }
+  .btn-primary{ background: var(--manila); color: #23180A; }
+  .btn-primary:hover:not(:disabled){ background: #E8C989; }
+  .btn-secondary{ background: transparent; border-color: var(--line-strong); color: var(--ink); }
+  .btn-secondary:hover:not(:disabled){ border-color: var(--manila); }
+  .btn-danger{ background: transparent; border-color: var(--danger); color: var(--no); }
+  .btn-danger:hover:not(:disabled){ background: rgba(199,126,134,0.12); }
+  .btn-row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; }
+
+  /* ---------- Card deal ---------- */
+  .deal{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 24px 0;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .card-tile{
+    width: 26px; height: 36px;
+    border-radius: 3px;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+    animation: dealIn 0.28s ease forwards;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .card-tile.yes{ background: var(--yes); color: var(--yes-ink); }
+  .card-tile.no{ background: var(--no); color: var(--no-ink); }
+  @keyframes dealIn{ to{ opacity:1; transform: translateY(0) scale(1); } }
+  @media (prefers-reduced-motion: reduce){
+    .card-tile{ animation: none; opacity:1; transform:none; }
+  }
+
+  .stat-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0 8px;
+  }
+  .stat{
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    text-align:center;
+  }
+  .stat .num{ font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--manila); display:block; }
+  .stat .lab{ font-size: 11px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; display:block; }
+  @media (max-width: 480px){ .stat-row{ grid-template-columns: repeat(2,1fr); } }
+
+  .status-msg{
+    font-size: 14px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 4px;
+  }
+  .status-msg.ok{ background: rgba(143,191,159,0.14); color: var(--yes); }
+  .status-msg.warn{ background: rgba(199,126,134,0.14); color: var(--no); }
+
+  /* ---------- Results table ---------- */
+  .results-table{ width:100%; border-collapse: collapse; font-size: 14px; }
+  .results-table th, .results-table td{
+    text-align:left;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .results-table th{
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+  .results-table td.num, .results-table th.num{ font-family: var(--mono); text-align:right; }
+  .method-group-row td{ background: var(--panel); font-weight: 700; }
+  .method-group-row td.avg{ color: var(--manila); }
+  .empty-note{ color: var(--ink-dim); font-size: 14px; font-style: italic; }
+
+  /* ---------- Admin panel ---------- */
+  details.admin{
+    background: var(--panel);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    padding: 4px 18px;
+  }
+  details.admin summary{
+    cursor:pointer;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--manila-dim);
+    padding: 14px 0;
+    list-style: none;
+  }
+  details.admin summary::-webkit-details-marker{ display:none; }
+  details.admin summary::before{ content: "\25B8 "; }
+  details.admin[open] summary::before{ content: "\25BE "; }
+  .admin-body{ padding-bottom: 18px; }
+  .admin-body p{ color: var(--ink-dim); font-size: 13.5px; }
+  .settings-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media (max-width: 520px){ .settings-grid{ grid-template-columns: 1fr; } }
+  .truth-reveal{ margin-top:18px; }
+  .truth-reveal table{ width:100%; border-collapse: collapse; font-size: 13.5px; margin-top:10px; }
+  .truth-reveal th, .truth-reveal td{ padding: 8px; border-bottom: 1px solid var(--line); text-align:left; }
+  .truth-reveal td.num{ font-family: var(--mono); text-align:right; }
+  .truth-pct{ font-family: var(--mono); font-size: 28px; color: var(--manila); font-weight:700; }
+</style>
+</head>
+<body>
+
+<div id="backend-banner" style="display:none; background:#4a2224; color:#F3EFE3; font-family: var(--mono); font-size:13px; text-align:center; padding:10px 16px; border-bottom:1px solid var(--line);">
+  Results board is not connected yet. Paste the Apps Script URL into API_URL near the top of the page's script tag. Drawing samples still works in the meantime.
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Office of the President</p>
+    <h1>You Work for the President Now</h1>
+    <p class="lede">Elmwood University is deciding whether to move classes to a four-day week, Monday through Thursday, no more Friday classes. Before making the call, the President wants a real read on what students think, and that job just landed on your desk. Go find out.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="locations-section">
+    <p class="section-label">Housing</p>
+    <h2>Where Elmwood Students Live</h2>
+    <p class="section-sub">Five main groups make up the student body, 400 students in total.</p>
+
+    <div class="location-grid">
+      <div class="location-card">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 44V20L24 8l18 12v24"/>
+            <path d="M14 44V26M22 44V26M26 44V26M34 44V26"/>
+            <path d="M4 20h40"/>
+          </svg>
+        </div>
+        <h3>Greek Row</h3>
+        <p class="headcount">60 students</p>
+        <p class="blurb">Twelve fraternity and sorority houses lined up along the edge of the quad, right next to the administration building. Porches are rarely empty.</p>
+      </div>
+
+      <div class="location-card">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="12" y="4" width="24" height="40" rx="1"/>
+            <path d="M18 12h4M26 12h4M18 20h4M26 20h4M18 28h4M26 28h4"/>
+            <path d="M20 44v-8h8v8"/>
+          </svg>
+        </div>
+        <h3>North Hall</h3>
+        <p class="headcount">80 students</p>
+        <p class="blurb">Elmwood's largest first-year dorm, set back near the athletic fields on the far side of campus. About a fifteen-minute walk from the quad.</p>
+      </div>
+
+      <div class="location-card">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 30l4-12a3 3 0 013-2h22a3 3 0 013 2l4 12"/>
+            <path d="M6 30v8a2 2 0 002 2h2a2 2 0 002-2v-3h24v3a2 2 0 002 2h2a2 2 0 002-2v-8"/>
+            <circle cx="14" cy="34" r="2.5"/>
+            <circle cx="34" cy="34" r="2.5"/>
+          </svg>
+        </div>
+        <h3>Off-Campus Commuters</h3>
+        <p class="headcount">100 students</p>
+        <p class="blurb">Students who live off campus and come in for classes, labs, and practice. Mostly seen moving between the parking structures and their next building.</p>
+      </div>
+
+      <div class="location-card">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 6h24v6a12 12 0 01-24 0V6z"/>
+            <path d="M12 8H6a4 4 0 004 8M36 8h6a4 4 0 01-4 8"/>
+            <path d="M24 24v8M17 44h14M20 38h8v6h-8z"/>
+          </svg>
+        </div>
+        <h3>Athletics Dorm</h3>
+        <p class="headcount">80 students</p>
+        <p class="blurb">Home to Elmwood's varsity athletes, attached to the fieldhouse. Practice, travel, and study hall keep the schedule tight.</p>
+      </div>
+
+      <div class="location-card" style="grid-column: 1 / -1;">
+        <div class="icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="24" r="18"/>
+            <path d="M6 24h36M24 6a27 27 0 010 36M24 6a27 27 0 000 36"/>
+          </svg>
+        </div>
+        <h3>International House</h3>
+        <p class="headcount">80 students</p>
+        <p class="blurb">A shared dorm for international and exchange students, built around one big common kitchen. Weekend potlucks are a fixture.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="draw-section">
+    <p class="section-label">Step 1</p>
+    <h2>Draw Your Sample</h2>
+    <p class="section-sub">Enter your name. Choose a method. Press the button to sample.</p>
+
+    <div class="field">
+      <label for="student-name">Your name</label>
+      <input type="text" id="student-name" placeholder="e.g. J. Alvarez" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label>Sampling method</label>
+      <div class="method-grid" id="method-grid">
+        <button type="button" class="method-btn active" data-method="convenience">Convenience sample</button>
+        <button type="button" class="method-btn" data-method="voluntary">Voluntary response</button>
+        <button type="button" class="method-btn" data-method="srs">Simple random sample</button>
+        <button type="button" class="method-btn" data-method="stratified">Stratified sample</button>
+      </div>
+      <div class="method-desc" id="method-desc"></div>
+    </div>
+
+    <p class="sample-size-note">Sample size: <b id="sample-size-display">20</b> students.</p>
+
+    <div class="btn-row" style="margin-top: 18px;">
+      <button class="btn-primary" id="draw-btn">Draw sample</button>
+    </div>
+
+    <div class="deal" id="deal-area"></div>
+
+    <div class="stat-row" id="stat-row" style="display:none;">
+      <div class="stat"><span class="num" id="stat-yes">&middot;&middot;&middot;</span><span class="lab">Yes</span></div>
+      <div class="stat"><span class="num" id="stat-no">&middot;&middot;&middot;</span><span class="lab">No</span></div>
+      <div class="stat"><span class="num" id="stat-n">&middot;&middot;&middot;</span><span class="lab">Sample size</span></div>
+      <div class="stat"><span class="num" id="stat-pct">&middot;&middot;&middot;</span><span class="lab">% Yes</span></div>
+    </div>
+
+    <div class="btn-row" style="margin-top: 18px;">
+      <button class="btn-secondary" id="submit-btn" disabled>Submit to the board</button>
+    </div>
+    <div id="submit-status"></div>
+  </section>
+
+  <section id="results-section">
+    <p class="section-label">Step 2</p>
+    <h2>Results So Far</h2>
+    <p class="section-sub">Everyone's submitted numbers, grouped by method.</p>
+    <div class="btn-row" style="margin-bottom: 18px;">
+      <button class="btn-secondary" id="refresh-btn">Refresh results</button>
+    </div>
+    <div id="results-table-wrap"><p class="empty-note">No submissions yet.</p></div>
+  </section>
+
+  <section id="admin-section">
+    <details class="admin">
+      <summary>Admin panel</summary>
+      <div class="admin-body">
+
+        <div id="admin-locked">
+          <p>Enter the password to manage settings and results.</p>
+          <div class="field" style="margin-bottom:12px; max-width:280px;">
+            <label for="admin-password">Password</label>
+            <input type="password" id="admin-password" autocomplete="off" />
+          </div>
+          <div class="btn-row">
+            <button class="btn-secondary" id="admin-unlock-btn">Unlock</button>
+          </div>
+          <div id="admin-unlock-status"></div>
+        </div>
+
+        <div id="admin-unlocked" style="display:none;">
+          <p>This panel is not meant to hide the true numbers from a determined student looking at the page source. It exists so a curious click does not accidentally wipe the shared results. Keep the Apps Script URL private too, since anyone who has it can read and write the sheet directly.</p>
+
+          <div class="settings-grid">
+            <div class="field" style="margin-bottom:0;">
+              <label for="session-code-input">Session code</label>
+              <input type="text" id="session-code-input" value="default" autocomplete="off" />
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label for="sample-size-input">Sample size (n)</label>
+              <input type="text" inputmode="numeric" id="sample-size-input" value="20" autocomplete="off" />
+            </div>
+          </div>
+          <p class="section-sub" style="margin-bottom:14px; font-size:13px;">Give different sections or sittings different session codes so their results do not mix on the same board. A new sample size applies to every draw made after you save.</p>
+          <div class="btn-row">
+            <button class="btn-secondary" id="save-settings-btn">Save settings</button>
+            <button class="btn-danger" id="clear-results-btn">Clear results for this session code</button>
+          </div>
+
+          <div class="truth-reveal">
+            <div class="btn-row">
+              <button class="btn-secondary" id="reveal-btn">Reveal true population</button>
+            </div>
+            <div id="truth-output"></div>
+          </div>
+        </div>
+
+      </div>
+    </details>
+  </section>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------------- Population ----------------
+  // 400 students across 5 housing groups. True support for the four-day
+  // week: 140/400 = 35%. Card ids double as convenience-sampling rank
+  // (lower id = drawn earlier in a convenience sample). Within each group,
+  // Yes cards are ranked before No cards.
+  const GROUP_DEFS = [
+    { name: "Greek Row",              total: 60,  yes: 50, yesResponders: 35, noResponders: 5  },
+    { name: "North Hall",             total: 80,  yes: 10, yesResponders: 10, noResponders: 20 },
+    { name: "Off-Campus Commuters",   total: 100, yes: 20, yesResponders: 20, noResponders: 20 },
+    { name: "Athletics Dorm",         total: 80,  yes: 20, yesResponders: 20, noResponders: 20 },
+    { name: "International House",    total: 80,  yes: 40, yesResponders: 30, noResponders: 10 },
+  ];
+  const GROUP_ORDER = GROUP_DEFS.map(g => g.name);
+
+  function buildPopulation(){
+    const cards = [];
+    let id = 1;
+    GROUP_DEFS.forEach(g => {
+      const no = g.total - g.yes;
+      for(let i=0; i<g.yes; i++){
+        cards.push({ id: id++, group: g.name, opinion: "Yes", responder: i < g.yesResponders });
+      }
+      for(let i=0; i<no; i++){
+        cards.push({ id: id++, group: g.name, opinion: "No", responder: i < g.noResponders });
+      }
+    });
+    return cards;
+  }
+  const CARDS = buildPopulation();
+  const TRUE_YES = CARDS.filter(c=>c.opinion==="Yes").length;
+  const TRUE_TOTAL = CARDS.length;
+
+  const METHOD_LABELS = {
+    convenience: "Convenience sample",
+    voluntary: "Voluntary response sample",
+    srs: "Simple random sample",
+    stratified: "Stratified sample",
+  };
+  const METHOD_DESCRIPTIONS = {
+    convenience: "Run out of the admin building with some paper surveys and ask the first 20 students you see",
+    voluntary: "Distribute surveys to the dining halls and classrooms with drop boxes so any student who wants to can fill them out",
+    srs: "Pull 20 student IDs at random from the database and make them answer the survey",
+    stratified: "Go to each of the five locations and survey students until you get four responses at each place",
+  };
+
+  // ---------------- Sampling logic ----------------
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      const tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+
+  function drawConvenience(n){
+    return CARDS.slice().sort((a,b)=>a.id-b.id).slice(0, n);
+  }
+
+  function drawVoluntary(n){
+    const pool = CARDS.filter(c=>c.responder);
+    const capped = Math.min(n, pool.length);
+    return shuffle(pool).slice(0, capped);
+  }
+
+  function drawSRS(n){
+    return shuffle(CARDS).slice(0, n);
+  }
+
+  function drawStratified(n){
+    const groups = GROUP_ORDER.map(name => ({ name, cards: CARDS.filter(c=>c.group===name) }));
+    const total = CARDS.length;
+    const quotas = groups.map(g => n * g.cards.length / total);
+    const base = quotas.map(q => Math.floor(q));
+    let remainder = n - base.reduce((a,b)=>a+b, 0);
+    const order = quotas
+      .map((q,i)=>({ i, frac: q - base[i] }))
+      .sort((a,b)=> b.frac - a.frac);
+    for(let k=0; k<remainder && k<order.length; k++){
+      base[order[k].i]++;
+    }
+    let result = [];
+    groups.forEach((g, i)=>{
+      const take = Math.min(base[i], g.cards.length);
+      result = result.concat(shuffle(g.cards).slice(0, take));
+    });
+    return result;
+  }
+
+  function drawSample(method, n){
+    if(method === "convenience") return drawConvenience(n);
+    if(method === "voluntary") return drawVoluntary(n);
+    if(method === "srs") return drawSRS(n);
+    if(method === "stratified") return drawStratified(n);
+    return [];
+  }
+
+  // ---------------- Storage helpers (Google Apps Script backend) ----------------
+  // Paste the Web app URL from your Apps Script deployment here (ends in /exec).
+  // See apps_script_backend.gs for the one-time setup steps.
+  const API_URL = "https://script.google.com/macros/s/AKfycbxWfmEpwPQMRI1nON1Sp3Yuaruz13lTZRe1z6XNzWBvQUa7psACixEmT49Obne9W4U/exec";
+
+  // Change this before publishing the page. It only gates the admin panel
+  // below, it is not real security, view-source still shows everything.
+  const ADMIN_PASSWORD = "changeme";
+
+  const DEFAULT_SETTINGS = { sampleSize: 20, sessionCode: "default" };
+  let storageAvailable = true;
+
+  function backendConfigured(){
+    return !!API_URL && API_URL.indexOf("PASTE_YOUR") !== 0;
+  }
+
+  async function apiCall(params){
+    if(!backendConfigured()){
+      throw new Error("Backend not configured");
+    }
+    const qs = Object.keys(params)
+      .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k]))
+      .join("&");
+    const res = await fetch(API_URL + "?" + qs, { method: "GET" });
+    if(!res.ok) throw new Error("Request failed: " + res.status);
+    const data = await res.json();
+    if(data && data.error) throw new Error(data.error);
+    return data;
+  }
+
+  async function loadSettings(){
+    try{
+      const r = await apiCall({ action: "get", key: "settings" });
+      storageAvailable = true;
+      if(r.value) return Object.assign({}, DEFAULT_SETTINGS, JSON.parse(r.value));
+      return Object.assign({}, DEFAULT_SETTINGS);
+    }catch(e){
+      storageAvailable = false;
+      return Object.assign({}, DEFAULT_SETTINGS);
+    }
+  }
+
+  async function saveSettings(s){
+    try{
+      await apiCall({ action: "set", key: "settings", value: JSON.stringify(s) });
+      storageAvailable = true;
+      return true;
+    }catch(e){
+      storageAvailable = false;
+      return false;
+    }
+  }
+
+  function submissionKey(sessionCode, name, method){
+    const safeName = (name || "anonymous").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    return "submission:" + sessionCode + ":" + safeName + "-" + method;
+  }
+
+  async function submitResult(sessionCode, name, method, data){
+    try{
+      const key = submissionKey(sessionCode, name, method);
+      await apiCall({ action: "set", key, value: JSON.stringify(data) });
+      storageAvailable = true;
+      return true;
+    }catch(e){
+      storageAvailable = false;
+      return false;
+    }
+  }
+
+  async function loadResults(sessionCode){
+    try{
+      const r = await apiCall({ action: "listValues", prefix: "submission:" + sessionCode + ":" });
+      storageAvailable = true;
+      const items = (r.items || []).map(it => {
+        try{ return JSON.parse(it.value); }catch(e){ return null; }
+      }).filter(Boolean);
+      return items;
+    }catch(e){
+      storageAvailable = false;
+      return [];
+    }
+  }
+
+  async function clearResults(sessionCode){
+    try{
+      await apiCall({ action: "deletePrefix", prefix: "submission:" + sessionCode + ":" });
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
+  // ---------------- UI wiring ----------------
+  const methodGrid = document.getElementById("method-grid");
+  const methodDesc = document.getElementById("method-desc");
+  const sampleSizeDisplay = document.getElementById("sample-size-display");
+  const drawBtn = document.getElementById("draw-btn");
+  const dealArea = document.getElementById("deal-area");
+  const statRow = document.getElementById("stat-row");
+  const statYes = document.getElementById("stat-yes");
+  const statNo = document.getElementById("stat-no");
+  const statN = document.getElementById("stat-n");
+  const statPct = document.getElementById("stat-pct");
+  const submitBtn = document.getElementById("submit-btn");
+  const submitStatus = document.getElementById("submit-status");
+  const nameInput = document.getElementById("student-name");
+  const refreshBtn = document.getElementById("refresh-btn");
+  const resultsWrap = document.getElementById("results-table-wrap");
+
+  const sessionCodeInput = document.getElementById("session-code-input");
+  const sampleSizeInput = document.getElementById("sample-size-input");
+  const saveSettingsBtn = document.getElementById("save-settings-btn");
+  const clearResultsBtn = document.getElementById("clear-results-btn");
+  const revealBtn = document.getElementById("reveal-btn");
+  const truthOutput = document.getElementById("truth-output");
+
+  const adminLocked = document.getElementById("admin-locked");
+  const adminUnlocked = document.getElementById("admin-unlocked");
+  const adminPasswordInput = document.getElementById("admin-password");
+  const adminUnlockBtn = document.getElementById("admin-unlock-btn");
+  const adminUnlockStatus = document.getElementById("admin-unlock-status");
+
+  let settings = Object.assign({}, DEFAULT_SETTINGS);
+  let currentDraw = null; // { method, yes, no, n, pct }
+  let currentMethod = "convenience";
+
+  function renderMethodDesc(){
+    methodDesc.textContent = METHOD_DESCRIPTIONS[currentMethod];
+  }
+  renderMethodDesc();
+
+  methodGrid.querySelectorAll(".method-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentMethod = btn.dataset.method;
+      methodGrid.querySelectorAll(".method-btn").forEach(b => b.classList.toggle("active", b === btn));
+      renderMethodDesc();
+      resetDrawUI();
+    });
+  });
+
+  function resetDrawUI(){
+    dealArea.innerHTML = "";
+    statRow.style.display = "none";
+    submitBtn.disabled = true;
+    submitStatus.innerHTML = "";
+    currentDraw = null;
+  }
+
+  function fmtPct(yes, n){
+    if(n === 0) return "0%";
+    return Math.round((yes / n) * 1000) / 10 + "%";
+  }
+
+  drawBtn.addEventListener("click", () => {
+    const method = currentMethod;
+    const n = settings.sampleSize;
+    const sample = drawSample(method, n);
+    const yes = sample.filter(c => c.opinion === "Yes").length;
+    const no = sample.length - yes;
+
+    dealArea.innerHTML = "";
+    sample.forEach((card, idx) => {
+      const tile = document.createElement("div");
+      tile.className = "card-tile " + (card.opinion === "Yes" ? "yes" : "no");
+      tile.style.animationDelay = (idx * 18) + "ms";
+      tile.textContent = card.opinion === "Yes" ? "Y" : "N";
+      tile.title = card.group;
+      dealArea.appendChild(tile);
+    });
+
+    statYes.textContent = yes;
+    statNo.textContent = no;
+    statN.textContent = sample.length;
+    statPct.textContent = fmtPct(yes, sample.length);
+    statRow.style.display = "grid";
+
+    currentDraw = { method, yes, no, n: sample.length, pct: fmtPct(yes, sample.length) };
+    submitBtn.disabled = false;
+    submitStatus.innerHTML = "";
+
+    if(method === "voluntary" && sample.length < n){
+      submitStatus.innerHTML = '<p class="status-msg warn">Only ' + sample.length + ' students in the population would volunteer a response. The sample is capped there.</p>';
+    }
+  });
+
+  submitBtn.addEventListener("click", async () => {
+    const name = nameInput.value.trim();
+    if(!name){
+      submitStatus.innerHTML = '<p class="status-msg warn">Enter your name so your result can be found on the board.</p>';
+      return;
+    }
+    if(!currentDraw){ return; }
+    submitBtn.disabled = true;
+    const data = {
+      name,
+      method: currentDraw.method,
+      methodLabel: METHOD_LABELS[currentDraw.method],
+      yes: currentDraw.yes,
+      no: currentDraw.no,
+      n: currentDraw.n,
+      pct: currentDraw.pct,
+      ts: Date.now(),
+    };
+    const ok = await submitResult(settings.sessionCode, name, currentDraw.method, data);
+    if(ok){
+      submitStatus.innerHTML = '<p class="status-msg ok">Submitted. Your result is on the board below. Resubmitting with the same name and method updates it.</p>';
+      refreshResults();
+    }else{
+      submitStatus.innerHTML = '<p class="status-msg warn">Could not reach the results board (it may not be set up yet, or the connection failed). Your result above is still correct. Report it another way.</p>';
+    }
+    submitBtn.disabled = false;
+  });
+
+  function renderResults(items){
+    if(!items.length){
+      resultsWrap.innerHTML = '<p class="empty-note">No submissions yet.</p>';
+      return;
+    }
+    const order = ["convenience","voluntary","srs","stratified"];
+    let html = '<table class="results-table"><thead><tr><th>Name</th><th>Method</th><th class="num">n</th><th class="num">Yes</th><th class="num">No</th><th class="num">% Yes</th></tr></thead><tbody>';
+    order.forEach(method => {
+      const rows = items.filter(it => it.method === method).sort((a,b)=> a.name.localeCompare(b.name));
+      if(!rows.length) return;
+      const totalYes = rows.reduce((s,r)=>s+r.yes, 0);
+      const totalN = rows.reduce((s,r)=>s+r.n, 0);
+      const avg = totalN ? Math.round((totalYes/totalN)*1000)/10 + "%" : "n/a";
+      html += '<tr class="method-group-row"><td colspan="5">' + METHOD_LABELS[method] + ' &middot; ' + rows.length + ' submission' + (rows.length===1?"":"s") + '</td><td class="num avg">' + avg + '</td></tr>';
+      rows.forEach(r => {
+        html += '<tr><td>' + escapeHtml(r.name) + '</td><td>' + METHOD_LABELS[r.method] + '</td><td class="num">' + r.n + '</td><td class="num">' + r.yes + '</td><td class="num">' + r.no + '</td><td class="num">' + r.pct + '</td></tr>';
+      });
+    });
+    html += '</tbody></table>';
+    resultsWrap.innerHTML = html;
+  }
+
+  function escapeHtml(s){
+    const div = document.createElement("div");
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  async function refreshResults(){
+    const items = await loadResults(settings.sessionCode);
+    renderResults(items);
+  }
+  refreshBtn.addEventListener("click", refreshResults);
+
+  // ---------------- Admin panel ----------------
+  adminUnlockBtn.addEventListener("click", () => {
+    if(adminPasswordInput.value === ADMIN_PASSWORD){
+      adminLocked.style.display = "none";
+      adminUnlocked.style.display = "block";
+      adminUnlockStatus.innerHTML = "";
+    }else{
+      adminUnlockStatus.innerHTML = '<p class="status-msg warn">Incorrect password.</p>';
+    }
+  });
+  adminPasswordInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") adminUnlockBtn.click();
+  });
+
+  saveSettingsBtn.addEventListener("click", async () => {
+    const code = sessionCodeInput.value.trim() || "default";
+    const rawSize = parseInt(sampleSizeInput.value, 10);
+    const size = (Number.isFinite(rawSize) && rawSize >= 2 && rawSize <= 200) ? rawSize : 20;
+    settings = { sessionCode: code, sampleSize: size };
+    sampleSizeInput.value = size;
+    await saveSettings(settings);
+    sampleSizeDisplay.textContent = settings.sampleSize;
+    resetDrawUI();
+    refreshResults();
+  });
+
+  clearResultsBtn.addEventListener("click", async () => {
+    if(!confirm('Clear all submitted results for session code "' + settings.sessionCode + '"? This cannot be undone.')) return;
+    await clearResults(settings.sessionCode);
+    refreshResults();
+  });
+
+  revealBtn.addEventListener("click", () => {
+    const truePct = Math.round((TRUE_YES/TRUE_TOTAL)*1000)/10;
+    let html = '<p class="truth-pct">' + truePct + '% Yes</p>';
+    html += '<p style="color:var(--ink-dim); font-size:13.5px; margin-top:-6px;">' + TRUE_YES + ' of ' + TRUE_TOTAL + ' Elmwood students in the population support the four-day week.</p>';
+    html += '<table><thead><tr><th>Housing group</th><th class="num">Students</th><th class="num">Yes</th><th class="num">% Yes</th></tr></thead><tbody>';
+    GROUP_ORDER.forEach(g => {
+      const members = CARDS.filter(c=>c.group===g);
+      const yes = members.filter(c=>c.opinion==="Yes").length;
+      const pct = Math.round((yes/members.length)*1000)/10;
+      html += '<tr><td>' + g + '</td><td class="num">' + members.length + '</td><td class="num">' + yes + '</td><td class="num">' + pct + '%</td></tr>';
+    });
+    html += '</tbody></table>';
+    truthOutput.innerHTML = html;
+  });
+
+  // ---------------- Init ----------------
+  (async function init(){
+    if(!backendConfigured()){
+      document.getElementById("backend-banner").style.display = "block";
+    }
+    settings = await loadSettings();
+    sessionCodeInput.value = settings.sessionCode;
+    sampleSizeInput.value = settings.sampleSize;
+    sampleSizeDisplay.textContent = settings.sampleSize;
+    if(!backendConfigured() || !storageAvailable){
+      document.getElementById("backend-banner").style.display = "block";
+    }
+    refreshResults();
+  })();
+
+})();
+</script>
+
+</body>
+</html>
